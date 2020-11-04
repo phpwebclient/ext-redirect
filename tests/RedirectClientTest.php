@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Webclient\Extension\Redirect;
 
+use GuzzleHttp\Psr7\Request;
 use Stuff\Webclient\Extension\Redirect\Handler;
-use Nyholm\Psr7\Request;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Client\ClientExceptionInterface;
 use Webclient\Extension\Redirect\Client;
@@ -28,10 +28,9 @@ class RedirectClientTest extends TestCase
 
         $client = new Client(new FakeClient(new Handler()), $maxRedirects);
 
-        $request = new Request('GET', 'http://localhost?redirects=' . $needRedirects, ['Accept' => 'text/plain']);
+        $request = new Request('GET', 'http://localhost/?redirects=' . $needRedirects, ['Accept' => 'text/plain']);
 
         $response = $client->sendRequest($request);
-
         $this->assertSame($expectRedirects, (int)$response->getBody()->__toString());
     }
 
