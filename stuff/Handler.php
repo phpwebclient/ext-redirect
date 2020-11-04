@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stuff\Webclient\Extension\Redirect;
 
-use Nyholm\Psr7\Response;
+use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -40,6 +40,6 @@ class Handler implements RequestHandlerInterface
             $headers['Location'] = $request->getUri()->withQuery($get)->__toString();
             $status = 302;
         }
-        return new Response($status, $headers, (string)$visit, '1.1');
+        return new Response($status, $headers, (string)$visit);
     }
 }
