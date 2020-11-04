@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Webclient\Extension\Redirect;
 
-use Pluf\Http\Headers;
-use Pluf\Http\Stream;
-use Pluf\Http\Uri;
+use GuzzleHttp\Psr7\Request;
 use Stuff\Webclient\Extension\Redirect\Handler;
-use Pluf\Http\Request;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Client\ClientExceptionInterface;
 use Webclient\Extension\Redirect\Client;
@@ -31,14 +28,9 @@ class RedirectClientTest extends TestCase
 
         $client = new Client(new FakeClient(new Handler()), $maxRedirects);
 
-        $headers = new Headers(['Accept' => 'text/plain']);
-        $uri = new Uri('http', 'localhost', 80, '/', 'redirects=' . $needRedirects);
-        $resource = fopen('php://temp', 'w+');
-        $body = new Stream($resource);
-        $request = new Request('GET', $uri, $headers, [], [], $body);
+        $request = new Request('GET', 'http://localhost/?redirects=' . $needRedirects, ['Accept' => 'text/plain']);
 
         $response = $client->sendRequest($request);
-        fclose($resource);
         $this->assertSame($expectRedirects, (int)$response->getBody()->__toString());
     }
 

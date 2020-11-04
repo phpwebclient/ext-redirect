@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Stuff\Webclient\Extension\Redirect;
 
-use Pluf\Http\Response;
+use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -40,11 +40,6 @@ class Handler implements RequestHandlerInterface
             $headers['Location'] = $request->getUri()->withQuery($get)->__toString();
             $status = 302;
         }
-        $response = new Response($status);
-        foreach ($headers as $header => $value) {
-            $response = $response->withHeader($header, $value);
-        }
-        $response->getBody()->write((string)$visit);
-        return $response->withProtocolVersion('1.1');
+        return new Response($status, $headers, (string)$visit);
     }
 }
