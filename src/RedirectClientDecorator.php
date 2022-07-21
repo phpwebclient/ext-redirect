@@ -8,28 +8,15 @@ use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-use function array_key_exists;
-use function array_replace;
-use function in_array;
-use function parse_url;
-
-final class Client implements ClientInterface
+final class RedirectClientDecorator implements ClientInterface
 {
-
-    /**
-     * @var ClientInterface
-     */
-    private $client;
-
-    /**
-     * @var int
-     */
-    private $maxRedirects;
+    private ClientInterface $client;
+    private int $maxRedirects;
 
     public function __construct(ClientInterface $client, int $maxRedirects = 10)
     {
         $this->client = $client;
-        $this->maxRedirects = $maxRedirects > 0 ? $maxRedirects : 0;
+        $this->maxRedirects = max($maxRedirects, 0);
     }
 
     /**

@@ -12,7 +12,7 @@ Redirect extension for PSR-18 HTTP client.
 Install this package and your favorite [psr-18 implementation](https://packagist.org/providers/psr/http-client-implementation).
 
 ```bash
-composer require webclient/ext-redirect:^1.0
+composer require webclient/ext-redirect:^2.0
 ```
 
 # Using
@@ -20,7 +20,7 @@ composer require webclient/ext-redirect:^1.0
 ```php
 <?php
 
-use Webclient\Extension\Redirect\Client;
+use Webclient\Extension\Redirect\RedirectClientDecorator;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
 
@@ -28,7 +28,7 @@ use Psr\Http\Message\RequestInterface;
  * @var ClientInterface $client Your PSR-18 HTTP Client
  * @var int $maxRedirects Max follow redirects
  */
-$http = new Client($client, $maxRedirects);
+$http = new RedirectClientDecorator($client, $maxRedirects);
 
 /** @var RequestInterface $request */
 $response = $http->sendRequest($request);

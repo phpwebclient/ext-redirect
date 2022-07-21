@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Webclient\Extension\Redirect;
 
-use GuzzleHttp\Psr7\Request;
+use Nyholm\Psr7\Request;
 use Stuff\Webclient\Extension\Redirect\Handler;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Client\ClientExceptionInterface;
-use Webclient\Extension\Redirect\Client;
-use Webclient\Fake\Client as FakeClient;
+use Webclient\Extension\Redirect\RedirectClientDecorator;
+use Webclient\Fake\FakeHttpClient;
 
-class RedirectClientTest extends TestCase
+class RedirectClientDecoratorTest extends TestCase
 {
-
     /**
      * @param int $maxRedirects
      * @param int $needRedirects
@@ -26,7 +25,7 @@ class RedirectClientTest extends TestCase
     public function testRedirects(int $maxRedirects, int $needRedirects, int $expectRedirects)
     {
 
-        $client = new Client(new FakeClient(new Handler()), $maxRedirects);
+        $client = new RedirectClientDecorator(new FakeHttpClient(new Handler()), $maxRedirects);
 
         $request = new Request('GET', 'http://localhost/?redirects=' . $needRedirects, ['Accept' => 'text/plain']);
 

@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Stuff\Webclient\Extension\Redirect;
 
-use GuzzleHttp\Psr7\Response;
+use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 class Handler implements RequestHandlerInterface
 {
-
     /**
      * @param ServerRequestInterface $request
      * @return ResponseInterface
