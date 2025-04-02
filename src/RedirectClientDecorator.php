@@ -43,6 +43,9 @@ final class RedirectClientDecorator implements ClientInterface
             $userInfo = $url['user'] . $url['pass'] ? ':' . $url['pass'] : '';
             if (array_key_exists('scheme', $url) && $url['scheme'] !== $uri->getScheme()) {
                 $uri = $uri->withScheme($url['scheme']);
+                if (!array_key_exists('port', $url)) {
+                    $url['port'] = $url['scheme'] === 'https' ? 443 : 80;
+                }
             }
             if ($uri->getUserInfo() !== $userInfo) {
                 $uri = $uri->withUserInfo($userInfo);
